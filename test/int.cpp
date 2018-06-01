@@ -1,14 +1,10 @@
-# bpcqueue
+#include <cstdio>
+#include <thread>
+#include <vector>
+#include "bpcqueue.hpp"
 
-A producer-aware MPMC bounded queue on top of
-[rigtorp/MPMCQueue](https://github.com/rigtorp/MPMCQueue) inspired by
-[cgaebel/pipe](https://github.com/cgaebel/pipe).
+using namespace bpcqueue;
 
-## Example
-
-Generator, transformer and sink functions:
-
-```cpp
 void produce(Output<int> dst, int n) {
     for (int i=0; i<n; ++i)
 	dst.push(i);
@@ -27,11 +23,7 @@ void print_sum(Input<int> src) {
         sum += x;
     printf("%d\n", sum);
 }
-```
 
-Assembling the transformations graph and starting/finishing the threads:
-
-```cpp
 int main() {
     // Arguments are capacities
     Queue<int> numbers(7), counts(4);
@@ -56,4 +48,3 @@ int main() {
     for (int i=0; i < n_counters; ++i) counters[i].join();
     printer.join();
 }
-
